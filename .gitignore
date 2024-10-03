@@ -1,7 +1,4 @@
-/Calculator/Calculator/x64/Debug
-/Calculator/x64/Debug
-/Calculator/plugins/*/*/x64/Debug
-/Calculator/plugins/*/x64/Debug/*
+**/Debug
 !funccos.dll
 **/framework.h
 **/dllmain.cpp
