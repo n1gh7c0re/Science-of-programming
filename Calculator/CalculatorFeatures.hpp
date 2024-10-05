@@ -21,7 +21,7 @@ using AssociativityMap = std::map<std::string, bool>;
 using OperatorsMap = std::map<std::string, std::function<double(double, double)>>;
 using FunctionsMap = std::map<std::string, std::tuple<TypeFunc, int, int>>;
 
-class Tokenizer {
+class CalcFeatures {
 private:
 	PriorityMap _priority_operations;
 	AssociativityMap _left_associativity_operations;
@@ -29,7 +29,7 @@ private:
 	FunctionsMap _available_functions;
 
 public:
-	Tokenizer(FunctionsMap& available_functions);
+	CalcFeatures(FunctionsMap& available_functions);
 
 	bool isOperator(std::string op);
 	bool isLeftAssociative(std::string op);

@@ -1,6 +1,6 @@
-#include "Tokenizer.hpp"
+#include "CalculatorFeatures.hpp"
 
-Tokenizer::Tokenizer(FunctionsMap& available_functions) {
+CalcFeatures::CalcFeatures(FunctionsMap& available_functions) {
 	_available_functions = available_functions;
 
 	_priority_operations = { {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2} };
@@ -19,28 +19,28 @@ Tokenizer::Tokenizer(FunctionsMap& available_functions) {
 
 }
 
-bool Tokenizer::isOperator(std::string op) {
+bool CalcFeatures::isOperator(std::string op) {
 	return (op == "+" || op == "-" || op == "*" || op == "/");
 }
 
-bool Tokenizer::isLeftAssociative(std::string token) {
+bool CalcFeatures::isLeftAssociative(std::string token) {
 	return _left_associativity_operations[token];
 }
 
-bool Tokenizer::PrioritySecondOverFirst(std::string op1, std::string op2) {
+bool CalcFeatures::PrioritySecondOverFirst(std::string op1, std::string op2) {
 	return _priority_operations[op1] <= _priority_operations[op2];
 }
 
-bool Tokenizer::isFunction(std::string func) {
+bool CalcFeatures::isFunction(std::string func) {
 	return (_available_functions.count(func));
 }
 
-bool Tokenizer::isNumber(std::string token) {
+bool CalcFeatures::isNumber(std::string token) {
 	std::regex numberRegex("[+-]?([0-9]*[.])?[0-9]+");
 	return std::regex_match(token, numberRegex);
 }
 
-std::deque<double> Tokenizer::BuildArgumentsFunction(int count_operands, std::stack<std::string>& calculating_stack) {
+std::deque<double> CalcFeatures::BuildArgumentsFunction(int count_operands, std::stack<std::string>& calculating_stack) {
 	std::deque<double> args;
 	double operand;
 	for (int i = 0; i < count_operands; i++) {
@@ -51,7 +51,7 @@ std::deque<double> Tokenizer::BuildArgumentsFunction(int count_operands, std::st
 	return args;
 }
 
-std::string Tokenizer::Calculate(std::stringstream& rpn_expression) {
+std::string CalcFeatures::Calculate(std::stringstream& rpn_expression) {
 	std::stack<std::string> calculating_stack;
 	std::string token;
 
@@ -113,26 +113,26 @@ std::string Tokenizer::Calculate(std::stringstream& rpn_expression) {
 	return calculating_stack.top();
 }
 
-PriorityMap& Tokenizer::GetPriotityOperations() {
+PriorityMap& CalcFeatures::GetPriotityOperations() {
 	return _priority_operations;
 }
 
-AssociativityMap& Tokenizer::GetLeftAssociativityOperations() {
+AssociativityMap& CalcFeatures::GetLeftAssociativityOperations() {
 	return _left_associativity_operations;
 }
 
-OperatorsMap& Tokenizer::GetBasicOperators() {
+OperatorsMap& CalcFeatures::GetBasicOperators() {
 	return _basic_operators;
 }
 
-void Tokenizer::SetPriotityOperations(PriorityMap new_priotity_operations) {
+void CalcFeatures::SetPriotityOperations(PriorityMap new_priotity_operations) {
 	_priority_operations = new_priotity_operations;
 }
 
-void Tokenizer::SetLeftAssociativityOperations(AssociativityMap new_left_associativity_operations) {
+void CalcFeatures::SetLeftAssociativityOperations(AssociativityMap new_left_associativity_operations) {
 	_left_associativity_operations = new_left_associativity_operations;
 }
 
-void Tokenizer::SetBasicOperators(OperatorsMap new_basic_operators) {
+void CalcFeatures::SetBasicOperators(OperatorsMap new_basic_operators) {
 	_basic_operators = new_basic_operators;
 }
