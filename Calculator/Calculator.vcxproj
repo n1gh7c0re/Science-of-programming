@@ -128,13 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Calculator.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="PluginManager.cpp" />
     <ClCompile Include="CalculatorFeatures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PluginManager.hpp" />
     <ClInclude Include="CalculatorFeatures.hpp" />
-    <ClInclude Include="Tokenizer.hpp" />
+    <ClInclude Include="Calculator.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
