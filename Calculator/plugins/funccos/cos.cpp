@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <cmath>
-#include <deque>
+#include <vector>
 #include <string>
 
 #ifdef FUNCCOS_EXPORTS
@@ -9,7 +9,7 @@
 #define COS_API __declspec(dllimport)
 #endif
 
-extern "C" COS_API double function(std::deque<double> arguments_function) {
+extern "C" COS_API double function(std::vector<double> arguments_function) {
 	return cos(arguments_function.at(0));
 }
 

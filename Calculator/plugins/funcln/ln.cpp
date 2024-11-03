@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <cmath>
-#include <deque>
+#include <vector>
 #include <string>
 
 #ifdef FUNCLN_EXPORTS
@@ -9,7 +9,7 @@
 #define LN_API __declspec(dllimport)
 #endif
 
-extern "C" LN_API double function(std::deque<double> arguments_function) {
+extern "C" LN_API double function(std::vector<double> arguments_function) {
 	return log(arguments_function.at(0));
 }
 

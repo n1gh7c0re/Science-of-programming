@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <cmath>
-#include <deque>
+#include <vector>
 #include <string>
 
 #ifdef FUNCSIN_EXPORTS
@@ -9,7 +9,7 @@
 #define SIN_API __declspec(dllimport)
 #endif
 
-extern "C" SIN_API double function(std::deque<double> arguments_function) {
+extern "C" SIN_API double function(std::vector<double> arguments_function) {
 	return sin(arguments_function.at(0));
 }
 

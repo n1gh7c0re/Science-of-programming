@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <cmath>
-#include <deque>
+#include <vector>
 #include <string>
 
 #ifdef FUNCSQRT_EXPORTS
@@ -9,7 +9,7 @@
 #define SQRT_API __declspec(dllimport)
 #endif
 
-extern "C" SQRT_API double function(std::deque<double> arguments_function) {
+extern "C" SQRT_API double function(std::vector<double> arguments_function) {
 	return sqrt(arguments_function.at(0));
 }
 

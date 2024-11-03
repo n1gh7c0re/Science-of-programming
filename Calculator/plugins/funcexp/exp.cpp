@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <cmath>
-#include <deque>
+#include <vector>
 #include <string>
 
 #ifdef FUNCEXP_EXPORTS
@@ -9,7 +9,7 @@
 #define EXP_API __declspec(dllimport)
 #endif
 
-extern "C" EXP_API double function(std::deque<double> arguments_function) {
+extern "C" EXP_API double function(std::vector<double> arguments_function) {
 	return exp(arguments_function.at(0));
 }
 
