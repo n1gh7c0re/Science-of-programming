@@ -85,6 +85,48 @@ std::vector<std::string> Calculator::ConvertToStandartForm(const std::vector<std
 	return new_tokens;
 }
 
+void Calculator::handleOperator(std::stack<std::string>& operator_stack, std::stringstream& output_stringstream, const std::string& token) {
+	while (
+		!operator_stack.empty() &&
+		(_calc_features->isOperator(operator_stack.top()) || _calc_features->isFunction(operator_stack.top())) &&
+		(_calc_features->PrioritySecondOverFirst(token, operator_stack.top()) ||
+			(_calc_features->GetPriotityOperations()[token] == _calc_features->GetPriotityOperations()[operator_stack.top()] &&
+				_calc_features->isLeftAssociative(token))))
+	{
+		output_stringstream << operator_stack.top() + " ";
+		operator_stack.pop();
+	}
+	operator_stack.push(token);
+}
+
+void Calculator::handleRightParenthesis(std::stack<std::string>& operator_stack, std::stringstream& output_stringstream) {
+	while (!operator_stack.empty() && operator_stack.top() != "(") {
+		output_stringstream << operator_stack.top() + " ";
+		operator_stack.pop();
+	}
+
+	if (operator_stack.empty()) {
+		throw std::string{ "Incorrect expression : incorrect parenthesis order or missing parentheses." };
+	}
+	operator_stack.pop();
+
+	if (!operator_stack.empty() && _calc_features->isFunction(operator_stack.top())) {
+		output_stringstream << operator_stack.top() + " ";
+		operator_stack.pop();
+	}
+}
+
+void Calculator::handleRemainingOperators(std::stack<std::string>& operator_stack, std::stringstream& output_stringstream) {
+	while (!operator_stack.empty()) {
+		if (operator_stack.top() == "(") {
+			throw std::string{ "Incorrect expression: incorrect parenthesis order or missing parentheses" };
+		}
+		
+		output_stringstream << operator_stack.top() + " ";
+		operator_stack.pop();
+	}
+}
+
 std::stringstream Calculator::ConvertToRPN(std::vector<std::string> tokens) {
 	std::stack<std::string> operator_stack;
 	std::stringstream output_stringstream;
@@ -109,41 +151,18 @@ std::stringstream Calculator::ConvertToRPN(std::vector<std::string> tokens) {
 		}
 		else {
 			if (_calc_features->isOperator(token) || _calc_features->isFunction(token)) {
-				while (
-					!operator_stack.empty() &&
-					(_calc_features->isOperator(operator_stack.top()) || _calc_features->isFunction(operator_stack.top())) &&
-					(_calc_features->PrioritySecondOverFirst(token, operator_stack.top()) ||
-						(_calc_features->GetPriotityOperations()[token] == _calc_features->GetPriotityOperations()[operator_stack.top()] &&
-							_calc_features->isLeftAssociative(token))))
-				{
-					output_stringstream << operator_stack.top() + " ";
-					operator_stack.pop();
-				}
-				operator_stack.push(token);
+				handleOperator(operator_stack, output_stringstream, token);
 			}
 			else if (token == "(") {
 				operator_stack.push(token);
 			}
 			else if (token == ")") {
-				while (!operator_stack.empty() && operator_stack.top() != "(") {
-					output_stringstream << operator_stack.top() + " ";
-					operator_stack.pop();
-				}
-
 				try {
-					if (operator_stack.empty()) {
-						throw std::string{ "Incorrect expression : incorrect parenthesis order or missing parentheses." };
-					}
-					operator_stack.pop();
+					handleRightParenthesis(operator_stack, output_stringstream);
 				}
 				catch (const std::string& ex) {
 					std::cout << ex << std::endl;
 					return std::stringstream();
-				}
-
-				if (!operator_stack.empty() && _calc_features->isFunction(operator_stack.top())) {
-					output_stringstream << operator_stack.top() + " ";
-					operator_stack.pop();
 				}
 			}
 			else {
@@ -157,18 +176,13 @@ std::stringstream Calculator::ConvertToRPN(std::vector<std::string> tokens) {
 			}
 		}
 	}
-	while (!operator_stack.empty()) {
-		try {
-			if (operator_stack.top() == "(") {
-				throw std::string{ "Incorrect expression: incorrect parenthesis order or missing parentheses" };
-			}
-		}
-		catch (const std::string& ex) {
-			std::cout << ex << std::endl;
-			return std::stringstream();
-		}
-		output_stringstream << operator_stack.top() + " ";
-		operator_stack.pop();
+
+	try {
+		handleRemainingOperators(operator_stack, output_stringstream);
+	}
+	catch (const std::string& ex) {
+		std::cout << ex << std::endl;
+		return std::stringstream();
 	}
 
 	return output_stringstream;

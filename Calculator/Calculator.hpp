@@ -14,7 +14,9 @@ private:
 	std::vector<std::string> TokenizeExpression(const std::string& input_expression);
 	std::vector<std::string> ConvertToStandartForm(const std::vector<std::string>& tokens);
 	std::stringstream ConvertToRPN(std::vector<std::string> tokens);
-
+	void handleOperator(std::stack<std::string>& operator_stack, std::stringstream& output_stringstream, const std::string& token);
+	void handleRightParenthesis(std::stack<std::string>& operator_stack, std::stringstream& output_stringstream);
+	void handleRemainingOperators(std::stack<std::string>& operator_stack, std::stringstream& output_stringstream);
 public:
 	Calculator();
 	Calculator(Calculator const&) = delete;
