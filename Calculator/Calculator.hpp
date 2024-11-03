@@ -11,6 +11,9 @@ class Calculator {
 private:
 	std::unique_ptr<CalcFeatures> _calc_features;
 	std::unique_ptr<PluginManager> _plugin_manager;
+	std::vector<std::string> TokenizeExpression(const std::string& input_expression);
+	std::vector<std::string> ConvertToStandartForm(const std::vector<std::string>& tokens);
+	std::stringstream ConvertToRPN(std::vector<std::string> tokens);
 
 public:
 	Calculator();
@@ -19,10 +22,6 @@ public:
 	Calculator operator=(Calculator const&) = delete;
 	Calculator operator=(Calculator&&) = delete;
 	~Calculator();
-
-	std::vector<std::string> TokenizeExpression(const std::string& input_expression);
-	std::vector<std::string> ConvertToStandartForm(const std::vector<std::string>& tokens);
-	std::stringstream ConvertToRPN(std::vector<std::string> tokens);
 
 	void Solve(std::string input_expression);
 };
